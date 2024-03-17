@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if (isset($_SESSION['users']) and (in_array(session_id(), $_SESSION['users']))) {
+    header("Location: main.php");
+    die();
+}
+
 
 ?>
 
@@ -50,7 +55,7 @@ session_start();
 <div class="registration-form">
     <p style="text-align: center;"><a href="index.php" class="logo">TASKS</a></p>
 
-    <form method="POST" action="controllers/check.php">
+    <form method="POST">
         <div class="mb-3">
             <label for="exampleFormControlInput1" class="form-label">Имя пользователя</label>
             <input type="text" class="form-control" placeholder="Ivanov Ivan" name="username">
@@ -62,7 +67,7 @@ session_start();
         </div>
 
         <div class="d-grid gap-2" style="margin-top: 30px">
-            <button class="btn btn-outline-success" type="submit" id="btn">Вход</button>
+            <button class="btn btn-outline-success" type="button" id="btn">Вход</button>
         </div>
 
         <div ><span id="err" style="font-size: small; color: #ae2012"></span></div>

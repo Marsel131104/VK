@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users']))) {
@@ -8,14 +9,9 @@ if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users'])))
 
 require_once "db/db_connect.php";
 $session_id = session_id();
-$row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHERE session_id = '$session_id'"));
+$row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance, history FROM user WHERE session_id = '$session_id'"));
 
-$result = mysqli_query($lnk, "SELECT name, cost, user FROM quest");
-$items = array();
-while ($row_task = mysqli_fetch_assoc($result)) {
-    array_push($items, $row_task);
-}
-
+$history = explode("->", $row['history']);
 
 ?>
 
@@ -105,7 +101,7 @@ while ($row_task = mysqli_fetch_assoc($result)) {
     <a href="main.php" class="logo">TASKS</a>
     <nav>
         <ul>
-            <li><a href="profile.php">👤 <?= $row['name'] ?></a></li>
+            <li><a href="#">👤 <?= $row['name'] ?></a></li>
             <li><a href="#"> <?= $row['balance'] ?> </a></li>
 
         </ul>
@@ -114,15 +110,10 @@ while ($row_task = mysqli_fetch_assoc($result)) {
 </header>
 
 
-<a href="create_task.php" style="text-decoration: none">
-<div class="d-grid gap-2" style="margin: 0 auto; margin-top: 50px; width: 80%; ">
-    <button class="btn btn-success" type="button">Создать своё задание</button>
-</div>
-</a>
-
 <?php
 
-foreach ($items as $item) {
+
+foreach ($history as $item) {
     echo '<div class="card">';
     echo '    <div class="card-header">';
     echo '        <div>👤' .  $item['user'] . '</div>';

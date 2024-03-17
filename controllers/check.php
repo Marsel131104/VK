@@ -30,15 +30,15 @@ else {
         require "../db/db_connect.php";
         $session_id = session_id();
 
-        mysqli_query($lnk, "UPDATE users SET session_id = '' WHERE session_id = '$session_id'");
-        mysqli_query($lnk, "UPDATE users SET session_id = '$session_id' WHERE name = '$username'");
+        mysqli_query($lnk, "UPDATE user SET session_id = '' WHERE session_id = '$session_id'");
+        mysqli_query($lnk, "UPDATE user SET session_id = '$session_id' WHERE name = '$username'");
     }
 
     function add_session_id($username)
     {
         require "../db/db_connect.php";
         $session_id = session_id();
-        mysqli_query($lnk, "UPDATE users SET session_id = '$session_id' WHERE name = '$username'");
+        mysqli_query($lnk, "UPDATE user SET session_id = '$session_id' WHERE name = '$username'");
     }
 
 

@@ -3,6 +3,7 @@ $("#btn").on("click", function () {
     $("form").find('input').each(function() {
         data[this.name] = $(this).val();
     });
+    console.log(data);
 
     $.ajax({
         url: "/vk/controllers/check.php",
@@ -16,7 +17,8 @@ $("#btn").on("click", function () {
             else if (response == "password-password")
                 $("#err").html("Неправильное имя пользователя или пароль");
             else if (response == "ok")
-                window.location.href = "/vk/login.php";
+
+                window.location.href = "/vk/main.php";
 
 
         }

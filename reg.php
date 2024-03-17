@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if (isset($_SESSION['users']) and (in_array(session_id(), $_SESSION['users']))) {
+    header("Location: main.php");
+    die();
+}
 
 
 ?>

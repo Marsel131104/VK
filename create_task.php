@@ -10,13 +10,6 @@ require_once "db/db_connect.php";
 $session_id = session_id();
 $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHERE session_id = '$session_id'"));
 
-$result = mysqli_query($lnk, "SELECT name, cost, user FROM quest");
-$items = array();
-while ($row_task = mysqli_fetch_assoc($result)) {
-    array_push($items, $row_task);
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +18,7 @@ while ($row_task = mysqli_fetch_assoc($result)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Задания</title>
+    <title>Создание задания</title>
 
     <style>
         header a {
@@ -74,28 +67,6 @@ while ($row_task = mysqli_fetch_assoc($result)) {
             color: #000000;
         }
 
-        .card {
-            margin: 0 auto;
-            margin-top: 30px;
-            width: 60%;
-            background-color: #212529;
-            color: #fefae0;
-
-        }
-
-
-        .card-header {
-            display: flex; /* Размещаем элементы в строку */
-            justify-content: space-between; /* Распределяем пространство между элементами */
-        }
-
-        a {
-            text-decoration: none;
-            color: #fefae0;
-        }
-
-
-
     </style>
 
 </head>
@@ -114,29 +85,54 @@ while ($row_task = mysqli_fetch_assoc($result)) {
 </header>
 
 
-<a href="create_task.php" style="text-decoration: none">
-<div class="d-grid gap-2" style="margin: 0 auto; margin-top: 50px; width: 80%; ">
-    <button class="btn btn-success" type="button">Создать своё задание</button>
+<div style="margin: 0 auto; margin-top: 20px; width: 50%; color: #d1ccc0">
+    <form style="">
+        <div class="mb-3">
+        <label class="form-label">Введите вопрос:</label>
+        <textarea class="form-control"  rows="3" name="name"></textarea>
+        </div>
+
+
+        <label class="form-label">Введите варианты ответов и укажите верный:</label>
+        <div class="btn-group btn-group-sm float-end" role="group">
+            <button type="button" class="btn btn-danger" id="decrease">-</button>
+            <button type="button" class="btn btn-success" id="increase">+</button>
+        </div>
+
+
+
+        <div class="form-check" style="margin-top: 30px;">
+            <input class="form-check-input" type="radio" name="radio1" >
+            <input class="form-control form-control-sm" type="text" name="1">
+        </div>
+
+        <div class="form-check" style="margin-top: 10px;">
+            <input class="form-check-input" type="radio" name="radio1">
+            <input class="form-control form-control-sm" type="text" name="2">
+        </div>
+
+        <div class="mb-3" style="margin-top: 30px;">
+            <label class="form-label">Введите количество начисляемых баллов:</label>
+            <input class="form-control form-control-sm" type="number"  min="1" max="10" placeholder="1-10" name="cost">
+        </div>
+
+
+
+        <div ><span id="err" style="font-size: medium; color: #ae2012"></span></div>
+
+
+        <div class="d-grid gap-2" style="margin: 0 auto; margin-top: 30px;">
+            <button class="btn btn-warning" type="button" id="create">Создать</button>
+        </div>
+
+
+    </form>
 </div>
-</a>
 
-<?php
 
-foreach ($items as $item) {
-    echo '<div class="card">';
-    echo '    <div class="card-header">';
-    echo '        <div>👤' .  $item['user'] . '</div>';
-    echo '        <div>💰' .  $item['cost'] . '</div>';
-    echo '    </div>';
-    echo '    <div class="card-body">';
-    echo '        <a href=""><h5 class="card-title">' . $item['name'] . '</h5></a>';
-    echo '    </div>';
-    echo '</div>';
-}
 
-?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="scripts/login/script_login.js"></script>
+<script src="scripts/create_task/create_task.js"></script>
 </body>
 </html>
