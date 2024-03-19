@@ -119,7 +119,7 @@ if (!empty($history)) {
         echo '        <div>💰' .  $result['cost'] . '</div>';
         echo '    </div>';
         echo '    <div class="card-body">';
-        echo '        <a href="solve_task.php?name='. $result['name']. '"><h5 class="card-title">' . $result['name'] . '</h5></a>';
+        echo '        <a href="solve_task.php?name='. urlencode($result['name']). '"><h5 class="card-title">' . $result['name'] . '</h5></a>';
         echo '    </div>';
         echo '</div>';
     }

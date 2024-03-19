@@ -122,7 +122,7 @@ $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHE
     <h4 class="alert-heading">Отлично, вы ответили верно!</h4>
     <p>Зарабатываете вознаграждение, можете пройти этот тест еще раз но баллы уже не будут начислены ;(</p>
     <hr>
-    <p class="mb-0">Теперь можно зайти в <a href="#" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">историю</a> и посмотреть все выполненные тесты.</p>
+    <p class="mb-0">Теперь можно зайти в <a href="history.php" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">историю</a> и посмотреть все выполненные тесты.</p>
 </div>
 
 

@@ -130,7 +130,7 @@ foreach ($items as $item) {
     echo '        <div>💰' .  $item['cost'] . '</div>';
     echo '    </div>';
     echo '    <div class="card-body">';
-    echo '        <a href="solve_task.php?name='. $item['name']. '"><h5 class="card-title">' . $item['name'] . '</h5></a>';
+    echo '        <a href="solve_task.php?name='. urlencode($item['name']). '"><h5 class="card-title">' . $item['name'] . '</h5></a>';
     echo '    </div>';
     echo '</div>';
 }
