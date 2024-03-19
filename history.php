@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users']))) {
@@ -10,9 +9,7 @@ if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users'])))
 require_once "db/db_connect.php";
 $session_id = session_id();
 $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance, history FROM user WHERE session_id = '$session_id'"));
-
-$history = explode("->", $row['history']);
-
+$username = $row['name'];
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +18,7 @@ $history = explode("->", $row['history']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Задания</title>
+    <title>История выполненных тестов</title>
 
     <style>
         header a {
@@ -101,8 +98,8 @@ $history = explode("->", $row['history']);
     <a href="main.php" class="logo">TASKS</a>
     <nav>
         <ul>
-            <li><a href="#">👤 <?= $row['name'] ?></a></li>
-            <li><a href="#"> <?= $row['balance'] ?> </a></li>
+            <li><a href="profile.php">👤 <?= $row['name'] ?></a></li>
+            <li><a href="history.php"> <?= $row['balance'] ?> </a></li>
 
         </ul>
 
@@ -111,19 +108,23 @@ $history = explode("->", $row['history']);
 
 
 <?php
+$history = $row['history'] ? explode(",",$row['history']) : [];
 
-
-foreach ($history as $item) {
-    echo '<div class="card">';
-    echo '    <div class="card-header">';
-    echo '        <div>👤' .  $item['user'] . '</div>';
-    echo '        <div>💰' .  $item['cost'] . '</div>';
-    echo '    </div>';
-    echo '    <div class="card-body">';
-    echo '        <a href=""><h5 class="card-title">' . $item['name'] . '</h5></a>';
-    echo '    </div>';
-    echo '</div>';
+if (!empty($history)) {
+    foreach ($history as $task) {
+        $result = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, cost, user FROM quest WHERE id = '$task'"));
+        echo '<div class="card">';
+        echo '    <div class="card-header">';
+        echo '        <div>👤' .  $result['user'] . '</div>';
+        echo '        <div>💰' .  $result['cost'] . '</div>';
+        echo '    </div>';
+        echo '    <div class="card-body">';
+        echo '        <a href="solve_task.php?name='. $result['name']. '"><h5 class="card-title">' . $result['name'] . '</h5></a>';
+        echo '    </div>';
+        echo '</div>';
+    }
 }
+
 
 ?>
 

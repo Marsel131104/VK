@@ -1,6 +1,6 @@
 <?php
-session_start();
 
+session_start();
 if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users']))) {
     header("Location: index.php");
     die();
@@ -9,15 +9,9 @@ if (!isset($_SESSION['users']) or (!in_array(session_id(), $_SESSION['users'])))
 require_once "db/db_connect.php";
 $session_id = session_id();
 $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHERE session_id = '$session_id'"));
-$username = $row['name'];
 
-$my = mysqli_query($lnk, "SELECT name, cost FROM quest WHERE user = '$username'");
-$my_tasks = array();
-while ($row1 = mysqli_fetch_assoc($my)) {
-    array_push($my_tasks, $row1);
-}
 
-$my_tasks = array_reverse($my_tasks);
+
 
 ?>
 
@@ -27,7 +21,7 @@ $my_tasks = array_reverse($my_tasks);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Ваши тесты</title>
+    <title>Решение теста</title>
 
     <style>
         header a {
@@ -76,6 +70,12 @@ $my_tasks = array_reverse($my_tasks);
             color: #000000;
         }
 
+        img {
+            width: 100%;
+            display: block;
+            opacity: 20%;
+        }
+
         .card {
             margin: 0 auto;
             margin-top: 30px;
@@ -91,10 +91,13 @@ $my_tasks = array_reverse($my_tasks);
             justify-content: space-between; /* Распределяем пространство между элементами */
         }
 
-        a {
-            text-decoration: none;
-            color: #fefae0;
+        #success_answer {
+            margin: 0 auto;
+            margin-top: 10px;
+            width: 60%;
+            text-align: center;
         }
+
 
 
 
@@ -108,29 +111,73 @@ $my_tasks = array_reverse($my_tasks);
     <nav>
         <ul>
             <li><a href="profile.php">👤 <?= $row['name'] ?></a></li>
-            <li><a href="history.php"> <?= $row['balance'] ?> </a></li>
+            <li><a href="history.php" id="balance"> <?= $row['balance'] ?> </a></li>
 
         </ul>
 
     </nav>
 </header>
 
-<p style="text-align: right; margin-right: 20px; margin-top: 20px"><a href="controllers/logout.php" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" >Выйти</a></p>
+<div class="alert alert-success" role="alert" id="success_answer" style="display: none">
+    <h4 class="alert-heading">Отлично, вы ответили верно!</h4>
+    <p>Зарабатываете вознаграждение, можете пройти этот тест еще раз но баллы уже не будут начислены ;(</p>
+    <hr>
+    <p class="mb-0">Теперь можно зайти в <a href="#" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">историю</a> и посмотреть все выполненные тесты.</p>
+</div>
+
 
 <?php
-foreach ($my_tasks as $task) {
+$name =  isset ($_GET['name']) ? $_GET['name'] : "";
+$task = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT * FROM quest WHERE name = '$name'"));
+
+
+if (!isset($task['name'])) {
+    echo '<img src="https://megaplast24.ru/wp-content/uploads/2021/08/404_atlanticbt_blog-1024x473.jpg" alt="">';
+} else {
+    require_once "controllers/Task.php";
+    $structure = unserialize($task['structure']);
+    echo '<input name="correct_answer" value="' . $structure->correct_answer . '" hidden>';
+    echo '<input name="id" value=' . $task['id'] . ' hidden>';
+    echo '<input name="cost" value=' . $task['cost'] . ' hidden>';
+
     echo '<div class="card">';
     echo '    <div class="card-header">';
-    echo '        <div>👤' .  $row['name'] . '</div>';
+    echo '        <div>👤' .  $task['user'] . '</div>';
     echo '        <div>💰' .  $task['cost'] . '</div>';
     echo '    </div>';
     echo '    <div class="card-body">';
-    echo '        <a href=""><h5 class="card-title">' . $task['name'] . '</h5></a>';
-    echo '    </div>';
+    echo '        <h5 class="card-title">' . $task['name'] . '</h5>';
+
+    echo '<div style="margin-top: 50px">';
+    foreach ($structure->data  as $answer) {
+        echo '<div class="form-check" style="margin-top: 10px;">';
+        echo '<input class="form-check-input" type="radio" name="radio1" >';
+        echo ' <label class="form-check-label" for="flexRadioDefault1">'.$answer.'</label>';
+        echo '</div>';
+    }
+
     echo '</div>';
+    echo '    </div>'; // card-body
+
+
+    echo '<div ><span id="err" style="font-size: medium; color: #ae2012;"></span></div>';
+    echo '<div ><span id="err" style="font-size: medium; color: #ae2012;"></span></div>';
+    echo '<div class="d-grid gap-2">';
+    echo '<button class="btn btn-warning" type="button" id="btn">Ответить</button>';
+    echo '</div>';
+
+    echo '</div>'; //card
+
 }
+
+
+
+
 
 ?>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="scripts/solve_task/solve_task.js"></script>
 </body>
 </html>

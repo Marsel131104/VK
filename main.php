@@ -15,6 +15,7 @@ $items = array();
 while ($row_task = mysqli_fetch_assoc($result)) {
     array_push($items, $row_task);
 }
+$items = array_reverse($items);
 
 
 ?>
@@ -106,7 +107,7 @@ while ($row_task = mysqli_fetch_assoc($result)) {
     <nav>
         <ul>
             <li><a href="profile.php">👤 <?= $row['name'] ?></a></li>
-            <li><a href="#"> <?= $row['balance'] ?> </a></li>
+            <li><a href="history.php"> <?= $row['balance'] ?> </a></li>
 
         </ul>
 
@@ -129,14 +130,12 @@ foreach ($items as $item) {
     echo '        <div>💰' .  $item['cost'] . '</div>';
     echo '    </div>';
     echo '    <div class="card-body">';
-    echo '        <a href=""><h5 class="card-title">' . $item['name'] . '</h5></a>';
+    echo '        <a href="solve_task.php?name='. $item['name']. '"><h5 class="card-title">' . $item['name'] . '</h5></a>';
     echo '    </div>';
     echo '</div>';
 }
 
 ?>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="scripts/login/script_login.js"></script>
 </body>
 </html>

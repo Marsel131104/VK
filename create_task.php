@@ -18,7 +18,7 @@ $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHE
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Создание задания</title>
+    <title>Создание теста</title>
 
     <style>
         header a {
@@ -77,7 +77,7 @@ $row = mysqli_fetch_assoc(mysqli_query($lnk, "SELECT name, balance FROM user WHE
     <nav>
         <ul>
             <li><a href="profile.php">👤 <?= $row['name'] ?></a></li>
-            <li><a href="#"> <?= $row['balance'] ?> </a></li>
+            <li><a href="history.php"> <?= $row['balance'] ?> </a></li>
 
         </ul>
 
