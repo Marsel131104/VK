@@ -62,11 +62,11 @@ else {
         if (($flag_low) and ($flag_high) and ($flag_symbols)) {
             break;
         }
-        else if (strpos($str_low, $password[$i]))
+        else if (strpos($str_low, $password[$i]) !== false)
             $flag_low = true;
-        else if (strpos($str_high, $password[$i]))
+        else if (strpos($str_high, $password[$i]) !== false)
             $flag_high = true;
-        else if (strpos($str_sybmols, $password[$i]))
+        else if (strpos($str_sybmols, $password[$i]) !== false)
             $flag_symbols = true;
     }
 
