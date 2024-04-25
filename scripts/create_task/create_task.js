@@ -4,6 +4,7 @@ $("#increase").on("click", function () {
 
     // Клонируем последний блок
     var clonedBlock = lastBlock.clone();
+    clonedBlock.find('input[type=radio]').prop('checked', false);
 
     // Увеличиваем значение атрибута 'name' у вложенного в блок input на 1
     var inputElement = clonedBlock.find('input[type=text]').val('');
@@ -17,14 +18,19 @@ $("#increase").on("click", function () {
 });
 
 $("#decrease").on("click", function () {
-    if ($('.form-check').length > 2)
+    if ($('.form-check').length > 2){
+        if (window.adjacentInputValue == $('.form-check:last').find('input[type=text]').attr('name'))
+            window.adjacentInputValue = undefined
         $('.form-check:last').remove();
+    }
+
+
 
 });
 
 
-$('input[type=radio][name=radio1]').change(function() {
-    window.adjacentInputValue = $(this).closest('.form-check').find('input[type=text]').val();
+$('form').on('change', 'input[type=radio][name=radio1]', function() {
+    window.adjacentInputValue = $(this).closest('.form-check').find('input[type=text]').attr('name');
 });
 
 
@@ -45,7 +51,7 @@ $("#create").on("click", function () {
     // проверка на заполняемость полей
     if (fields) {
         // проверка на то что отмечен правильный вариант ответа
-        if ($('input[name="radio1"]:checked').length == 0)
+        if ($('input[name="radio1"]:checked').length === 0)
             $("#err").html("Отметьте правильный вариант");
 
         else {
@@ -61,7 +67,7 @@ $("#create").on("click", function () {
                     type: 'POST',
                     data: data,
                     success: function (response) {
-                        if (response == "Такой вопрос уже есть")
+                        if (response === "Такой вопрос уже есть")
                             $("#err").html(response);
                         else {
                             $("#err").html();

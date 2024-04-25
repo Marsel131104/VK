@@ -136,6 +136,7 @@ if (!isset($task['name'])) {
 } else {
     require_once "controllers/Task.php";
     $structure = unserialize($task['structure']);
+
     echo '<input name="correct_answer" value="' . $structure->correct_answer . '" hidden>';
     echo '<input name="id" value=' . $task['id'] . ' hidden>';
     echo '<input name="cost" value=' . $task['cost'] . ' hidden>';
@@ -149,11 +150,13 @@ if (!isset($task['name'])) {
     echo '        <h5 class="card-title">' . $task['name'] . '</h5>';
 
     echo '<div style="margin-top: 50px">';
+    $i = 1;
     foreach ($structure->data  as $answer) {
         echo '<div class="form-check" style="margin-top: 10px;">';
         echo '<input class="form-check-input" type="radio" name="radio1" >';
-        echo ' <label class="form-check-label" for="flexRadioDefault1">'.$answer.'</label>';
+        echo ' <label class="form-check-label" name="'.$i.'">'.$answer.'</label>';
         echo '</div>';
+        $i++;
     }
 
     echo '</div>';

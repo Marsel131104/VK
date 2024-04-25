@@ -1,9 +1,11 @@
 $('input[type=radio][name=radio1]').change(function() {
-    window.adjacentInputValue = $(this).closest('.form-check').find('label[class=form-check-label]').text();
+    window.adjacentInputValue = $(this).closest('.form-check').find('label[class=form-check-label]').attr('name');
+    console.log(window.adjacentInputValue, $("[name='correct_answer']").val());
 });
 
 $("#btn").on("click", function () {
     $("#success_answer").hide();
+    console.log(window.adjacentInputValue);
 
     // проверяем чтобы был выбран ответ
     if ($('input[name="radio1"]:checked').length == 0) {
@@ -12,7 +14,7 @@ $("#btn").on("click", function () {
 
     else {
         // проверяем чтобы был выбранный ответ был верным
-        if (window.adjacentInputValue != $("[name='correct_answer']").val()) {
+        if (window.adjacentInputValue !== $("[name='correct_answer']").val()) {
             $("#err").html("Неверный ответ");
 
         }
